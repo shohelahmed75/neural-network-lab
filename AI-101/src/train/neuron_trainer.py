@@ -1,14 +1,17 @@
 import json
 import random
+from pathlib import Path
 
 from src.models.neuron import NeuronV1
 from src.neuron_loader import save_neuron
 from src.services.prediction_service import predict_v1
 
+BASE_DIR = Path(__file__).resolve().parent
+
 
 class NeuronTrainer:
     training_data = []
-    training_data_path = "C:\\Users\\Mazid\\PycharmProjects\\AI-101\\src\\train\\training_data.json"
+    training_data_path = BASE_DIR / "training_data.json"
 
     learning_rate = 0.5  # how big a nudge we make each time
     epochs = 20000  # how many times we loop over the data
@@ -30,7 +33,7 @@ class NeuronTrainer:
         )
 
         if training_data_path:
-            self.training_data_path = training_data_path
+            self.training_data_path = Path(training_data_path)
 
         # Load training data
         self.__load_train_data__()

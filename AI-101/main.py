@@ -14,6 +14,7 @@ That exact loop is what scales all the way up to a chatbot.
 """
 
 import random
+from pathlib import Path
 
 from src.models.neuron import NeuronV1
 from src.neuron_loader import save_neuron
@@ -95,6 +96,7 @@ if __name__ == '__main__':
     #                               42074000
     neuron_trainer.save()
 
-    neuron_trainer2 = NeuronTrainer("N4", "C:\\Users\\Mazid\\PycharmProjects\\AI-101\\src\\train\\training_data_2.json")
+    training_data_2_path = Path(__file__).resolve().parent / "src" / "train" / "training_data_2.json"
+    neuron_trainer2 = NeuronTrainer("N4", training_data_2_path)
     neuron_trainer2.start_training(1)
     neuron_trainer2.save()
