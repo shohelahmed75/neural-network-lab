@@ -3,8 +3,8 @@ import json
 import os
 
 # Hardcoded neuron name and number of training loops (epochs)
-NEURON_NAME = "Neuron_1"
-EPOCHS = 1000
+NEURON_NAME = "Neuron_3"
+EPOCHS = 100000
 LEARNING_RATE = 0.5
 
 
@@ -14,7 +14,7 @@ def sigmoid(z):
 
 def train():
     neuron_file = "output/neuron.json"
-    data_file = "services/training/train_OR.json"
+    data_file = "services/training/train_AND.json"
 
     # Check if neuron file exists
     if not os.path.exists(neuron_file):
@@ -48,12 +48,14 @@ def train():
     bias = neuron["bias"]
 
     # Run training loop
-    for _ in range(EPOCHS):
+    for epoch in range(1, EPOCHS + 1):
         for item in dataset:
             x1, x2, target = item[0], item[1], item[2]
 
             z = (x1 * w1) + (x2 * w2) + bias
             output = sigmoid(z)
+
+            print(f"Iteration {epoch} [inputs: ({x1}, {x2})]: sigmoid(z) = {output}")
 
             # Gradient descent update for sigmoid neuron
             error = target - output
