@@ -3,7 +3,7 @@ import json
 import os
 
 # Hardcoded neuron name to predict with
-NEURON_NAME = "Neuron_2"
+NEURON_NAME = "Neuron_Failed_XOR"
 
 
 def sigmoid(z):
