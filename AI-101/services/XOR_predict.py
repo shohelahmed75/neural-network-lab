@@ -10,46 +10,51 @@ def sigmoid(z):
 def predict():
     file_path = "output/neuron.json"
 
+    # Check if file exists
     if not os.path.exists(file_path):
-        print("Connected Neuron output not available")
+        print("neuron not available")
         return None
 
+    # Load neurons data
     with open(file_path, "r") as f:
         try:
             neurons = json.load(f)
         except json.JSONDecodeError:
             neurons = {}
 
-    # Get Neuron_1 and Neuron_2 outputs
-    n1 = neurons.get("Neuron_1", {})
-    n2 = neurons.get("Neuron_2", {})
-
-    h1 = n1.get("h", "")
-    h2 = n2.get("h", "")
-
-    # Check if h values are valid numbers
-    if not isinstance(h1, (int, float)) or not isinstance(h2, (int, float)):
-        print("Connected Neuron output not available")
+    # Check if required neurons exist
+    if "Neuron_1" not in neurons or "Neuron_2" not in neurons or "Neuron_XOR" not in neurons:
+        print("neuron not available")
         return None
 
-    x1 = float(h1)
-    x2 = float(h2)
+    # Ask user for x1 and x2 inputs
+    x1 = float(input("Enter x1: "))
+    x2 = float(input("Enter x2: "))
 
-    # Get XOR neuron (Neuron_XOR) parameters
-    neuron = neurons.get("Neuron_XOR", {})
-    w1 = neuron.get("w1", 0.5)
-    w2 = neuron.get("w2", 0.5)
-    bias = neuron.get("bias", -0.5)
+    # Feed x1 and x2 into Neuron_1 -> calculate h1
+    n1 = neurons["Neuron_1"]
+    z1 = (x1 * n1["w1"]) + (x2 * n1["w2"]) + n1["bias"]
+    h1 = sigmoid(z1)
+    n1["h"] = h1
 
-    # Predict
-    z = (x1 * w1) + (x2 * w2) + bias
-    result = sigmoid(z)
+    # Feed x1 and x2 into Neuron_2 -> calculate h2
+    n2 = neurons["Neuron_2"]
+    z2 = (x1 * n2["w1"]) + (x2 * n2["w2"]) + n2["bias"]
+    h2 = sigmoid(z2)
+    n2["h"] = h2
 
-    # Store h value for Neuron_XOR
-    if "Neuron_XOR" in neurons:
-        neurons["Neuron_XOR"]["h"] = result
-        with open(file_path, "w") as f:
-            json.dump(neurons, f, indent=4)
+    # Feed h1 and h2 as inputs into Neuron_XOR -> calculate result
+    nx = neurons["Neuron_XOR"]
+    z_xor = (h1 * nx["w1"]) + (h2 * nx["w2"]) + nx["bias"]
+    result = sigmoid(z_xor)
+    nx["h"] = result
+
+    # Save updated h values to output/neuron.json
+    neurons["Neuron_1"] = n1
+    neurons["Neuron_2"] = n2
+    neurons["Neuron_XOR"] = nx
+    with open(file_path, "w") as f:
+        json.dump(neurons, f, indent=4)
 
     print(f"sigmoid(z): {result}")
     return result
