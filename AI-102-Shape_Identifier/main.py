@@ -1,8 +1,9 @@
 from network.network import NeuralNetwork
+from services.prediction import predict
 
 def main():
-    # Instantiate the neural network (25 inputs -> 12 hidden -> 3 outputs)
-    net = NeuralNetwork()
+    network_name = "Network_1"
+    json_path = "output/network.json"
 
     # Sample input of 25 values (representing a 5x5 grid/image)
     sample_input = [
@@ -13,16 +14,19 @@ def main():
         1, 1, 1, 1, 1
     ]
 
-    # Run forward pass
-    output = net.forward(sample_input)
+    # Try prediction using saved network from output/network.json
+    output = predict(network_name, sample_input, json_path)
 
-    # Save network state (weights, bias, h) to JSON file
-    net.save_to_json("output/network.json")
+    if output is not None:
+        print(f"\n\033[96mExecuted prediction using saved network '{network_name}' from {json_path}")
+    else:
+        print(f"\n\033[91mNetwork '{network_name}' not found in {json_path}. Executing old usual way (new NeuralNetwork)...")
+        net = NeuralNetwork()
+        output = net.forward(sample_input)
 
-    print("Network Output:")
+    print("\nNetwork Output:")
     for i, score in enumerate(output):
         print(f"  Output Neuron {i + 1}: {score:.4f}")
-    print("\nSaved network data to output/network.json")
 
 if __name__ == "__main__":
     main()
