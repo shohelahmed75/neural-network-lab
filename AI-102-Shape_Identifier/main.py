@@ -16,9 +16,13 @@ def main():
     # Run forward pass
     output = net.forward(sample_input)
 
+    # Save network state (weights, bias, h) to JSON file
+    net.save_to_json("output/network.json")
+
     print("Network Output:")
     for i, score in enumerate(output):
         print(f"  Output Neuron {i + 1}: {score:.4f}")
+    print("\nSaved network data to output/network.json")
 
 if __name__ == "__main__":
     main()

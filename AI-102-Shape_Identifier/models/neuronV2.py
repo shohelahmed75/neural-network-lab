@@ -12,6 +12,7 @@ class Neuron:
         ]
 
         self.bias = random.uniform(-1, 1)
+        self.h = None
 
     def forward(self, inputs):
         total = self.bias
@@ -19,4 +20,12 @@ class Neuron:
         for x, w in zip(inputs, self.weights):
             total += x * w
 
-        return sigmoid(total)
+        self.h = sigmoid(total)
+        return self.h
+
+    def to_dict(self):
+        return {
+            "weights": self.weights,
+            "bias": self.bias,
+            "h": self.h
+        }
