@@ -52,3 +52,16 @@ def predict(network_name, inputs, json_path="output/network.json"):
     except Exception as e:
         print(f"Warning: Failed to read prediction from {json_path}: {e}")
         return None
+
+def get_shape_name(output_array):
+    """
+    Translates output neuron probabilities array into the predicted shape name.
+    Index 0: square
+    Index 1: cross
+    Index 2: triangle
+    """
+    if not output_array or len(output_array) < 3:
+        return "unknown"
+    shapes = ["square", "cross", "triangle"]
+    max_idx = output_array.index(max(output_array))
+    return shapes[max_idx]
