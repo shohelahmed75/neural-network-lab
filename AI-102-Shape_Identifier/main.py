@@ -7,11 +7,11 @@ def main():
 
     # Sample input of 25 values (representing a 5x5 grid/image)
     sample_input = [
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0,
         1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0
+        1, 0, 0, 0, 1,
+        1, 0, 0, 0, 1,
+        1, 0, 0, 0, 1,
+        1, 1, 1, 1, 1
     ]
 
     # Try prediction using saved network from output/network.json
